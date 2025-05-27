@@ -1,15 +1,22 @@
 
+// <Image/> component is used to optimize images in Next.js applications.
+import Image from 'next/image';
+import Link from 'next/link';
 import { EventModel } from "../models";
 
 
 async function getEvents(): Promise<EventModel[]> {
-  const response = await fetch("http://localhost:8000/events");
+  const response = await fetch("http://localhost:8000/events", {
+    cache: "no-cache", // Disable caching for development
+   // next: {
+   //   revalidate: 10
+   // }
+  });
   return response.json();
 }
-
+  
 
 export default async function Home() {
-
   const events = await getEvents();
 
   return (
@@ -19,7 +26,14 @@ export default async function Home() {
         {events.map((event, key) => (
           
           <div key={key} className="bg-white shadow-lg rounded-lg">
-          <img className="w-full h-48 object-cover" src={event.image_url}/>
+
+          <Image className="w-full h-48 object-cover" 
+          src={event.image_url} 
+          alt={event.name}
+          width={300}
+          height={200}
+          />
+
           <div className="p-4">
 
 
@@ -43,8 +57,10 @@ export default async function Home() {
               </p>
 
 
-            <p>
-              <button>Reservar Lugar</button>
+            <p className="text-gray-700 mt-2">
+              <Link href={`/events/${event.id}/spots-layout`} className="bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+              Reservar Lugar
+              </Link>
             </p>
 
 
