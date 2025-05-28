@@ -1,8 +1,12 @@
 
-import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
-export function GET() {
-    return NextResponse.json({
-        message: "Hello Word",
-    });
+export function POST(
+    request: NextRequest,
+{ params }: { params: {eventId: string } }
+) {
+    revalidateTag("events")
+    revalidateTag(`events/${params.eventId}`);
+    return new Response(null, { status: 204 });
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SpotSeat } from "../../../../components/SpotSeat";
 import { EventModel, SpotModel, SpotStatus } from "../../../../models";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 async function getEvent(
   eventId: number
@@ -21,9 +22,19 @@ export async function reserveSpots(formData: FormData): Promise<void> {
   const cookieStore = await cookies();
   
 
-  if (spots.length === 0) {
-    throw Error("Selecione ao menos um assento.");
+  // if (spots.length === 0) {
+  //   throw Error("Selecione ao menos um assento.");
+    
+  // }
+
+    if (spots.length === 0) {
+
+     redirect("/not-found");
+     
   }
+ 
+   
+  
 
   cookieStore.set("spots", JSON.stringify(spots));
   cookieStore.set("eventId", formData.get("eventId") as string);
