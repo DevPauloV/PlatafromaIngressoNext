@@ -21,14 +21,14 @@ export async function reserveSpots(formData: FormData): Promise<void> {
   const spots = formData.getAll("spots");
   const cookieStore = await cookies();
 
-  if (spots.length === 0) {
-    throw Error("Selecione ao menos um assento.");
+  // if (spots.length === 0) {
+  //   throw Error("Selecione ao menos um assento.");
 
-  }
-
-  //   if (spots.length === 0) {
-  //    redirect("/not-found");
   // }
+
+  if (spots.length === 0) {
+    redirect("/not-found");
+  }
 
   //   if (spots.length === 0) {
   //    return { message: 'Failed to create post' }
