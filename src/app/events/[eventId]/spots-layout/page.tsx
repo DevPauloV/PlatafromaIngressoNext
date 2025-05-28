@@ -20,28 +20,23 @@ export async function reserveSpots(formData: FormData): Promise<void> {
   "use server";
   const spots = formData.getAll("spots");
   const cookieStore = await cookies();
-  
 
-  // if (spots.length === 0) {
-  //   throw Error("Selecione ao menos um assento.");
-    
+  if (spots.length === 0) {
+    throw Error("Selecione ao menos um assento.");
+
+  }
+
+  //   if (spots.length === 0) {
+  //    redirect("/not-found");
   // }
 
-    if (spots.length === 0) {
-
-     redirect("/not-found");
-     
-  }
- 
-   
-  
+  //   if (spots.length === 0) {
+  //    return { message: 'Failed to create post' }
+  // }
 
   cookieStore.set("spots", JSON.stringify(spots));
   cookieStore.set("eventId", formData.get("eventId") as string);
-
-  
 }
-
 
 //Server Components - podem ser assincronos | não interatividade de components |
 //Client Components
@@ -61,7 +56,7 @@ async function SpotsLayoutPage({ params }: { params: { eventId: string } }) {
     };
   });
 
-  const reservedSpotRaw = ( await cookies()).get("spots")?.value;
+  const reservedSpotRaw = (await cookies()).get("spots")?.value;
   const reservedSpots = reservedSpotRaw ? JSON.parse(reservedSpotRaw) : [];
 
   return (
@@ -110,4 +105,3 @@ async function SpotsLayoutPage({ params }: { params: { eventId: string } }) {
 }
 
 export default SpotsLayoutPage;
-//server actions
